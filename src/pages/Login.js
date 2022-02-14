@@ -44,7 +44,6 @@ class Login extends Component {
 
         <button
           data-testid="login-submit-button"
-          id="isLoginButtonDisabled"
           type="submit"
           onClick={ this.loginButtonClick }
           disabled={ this.verifyUserLength(inputUser) }
