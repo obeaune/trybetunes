@@ -1,21 +1,27 @@
 import React, { Component } from 'react';
-import PropTypes, { string, number } from 'prop-types';
+import PropTypes, { string, number, bool } from 'prop-types';
 import { addSong } from '../services/favoriteSongsAPI';
 import Loading from './Loading';
 
 class MusicCard extends Component {
   state = {
     loading: false,
+    isChecked: false,
+  }
+
+  componentDidMount() {
+    const { check } = this.props;
+    this.setState({ isChecked: check });
   }
 
   handleCheckboxChange = async (track) => {
-    this.setState({ loading: true });
+    this.setState({ loading: true, isChecked: true });
     await addSong(track);
     this.setState({ loading: false });
   }
 
   render() {
-    const { loading } = this.state;
+    const { loading, isChecked } = this.state;
     const { track } = this.props;
     const { trackName, previewUrl, trackId } = track;
 
@@ -25,8 +31,9 @@ class MusicCard extends Component {
         <div>
           <h4>{ trackName }</h4>
           <label htmlFor={ trackId }>
-            Favorita:
+            Favorita
             <input
+              checked={ isChecked }
               onChange={ () => this.handleCheckboxChange(track) }
               type="checkbox"
               id={ trackId }
@@ -48,6 +55,7 @@ class MusicCard extends Component {
 }
 
 MusicCard.propTypes = {
+  check: bool.isRequired,
   track: PropTypes.shape({
     trackName: string,
     previewUrl: string,
